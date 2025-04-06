@@ -8,7 +8,14 @@ import { useNavigate } from "react-router";
 function Signup(params) {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
-  const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
+  const {
+    getFieldProps,
+    handleSubmit,
+
+    touched,
+    errors,
+    isValid,
+  } = useFormik({
     validateOnMount: true,
     initialValues: {
       firstName: "",
@@ -208,6 +215,7 @@ function Signup(params) {
                     type="checkbox"
                     name="isBusiness"
                     label="Signup as business"
+                   
                   ></Input>
                 </div>
               </div>
