@@ -1,5 +1,5 @@
 function Input({ label, error, ...rest }) {
-  const { type, name, required } = rest;
+  const { type, name, checked, required } = rest;
   return (
     <div className="col-4">
       {type !== "checkbox" && (
@@ -23,6 +23,7 @@ function Input({ label, error, ...rest }) {
             className="form-check-input"
             type="checkbox"
             id={name}
+            checked={checked}
             {...rest}
           />
           <label className="form-check-label" htmlFor={name}>

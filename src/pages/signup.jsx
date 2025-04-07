@@ -18,27 +18,35 @@ function Signup(params) {
   } = useFormik({
     validateOnMount: true,
     initialValues: {
-      firstName: "",
-      lastName: "",
-      middleName: "",
+      name: {
+        first: "",
+        middle: "",
+        last: "",
+      },
+      phone: "",
       email: "",
       password: "",
-      phone: "",
-      image: "",
-      altImage: "",
-      state: "",
-      country: "",
-      city: "",
-      street: "",
-      houseNumber: "",
-      zip: "",
+      image: {
+        url: "",
+        alt: "",
+      },
+      address: {
+        state: "",
+        country: "",
+        city: "",
+        street: "",
+        houseNumber: "",
+        zip: "",
+      },
       isBusiness: false,
     },
     validate(values) {
       const userSchema = Joi.object({
-        firstName: Joi.string().min(2).max(256).required(),
-        middleName: Joi.string().min(2).max(256).required(),
-        lastName: Joi.string().min(2).max(256).required(),
+        name: Joi.object({
+          first: Joi.string().min(2).max(256).required(),
+          middle: Joi.string().min(2).max(256).allow(""),
+          last: Joi.string().min(2).max(256).required(),
+        }),
         email: Joi.string().min(6).max(255).required().email({ tlds: false }),
         password: Joi.string()
           .min(9)
@@ -48,14 +56,18 @@ function Signup(params) {
         phone: Joi.string()
           .pattern(/^[0-9]{9}$/)
           .required(),
-        image: Joi.string().allow(""),
-        altImage: Joi.string().allow(""),
-        state: Joi.string().allow(""),
-        country: Joi.string().min(2).max(256).required(),
-        city: Joi.string().min(2).max(256).required(),
-        street: Joi.string().min(2).max(256).required(),
-        houseNumber: Joi.number().required(),
-        zip: Joi.string().allow(""),
+        image: Joi.object({
+          url: Joi.string().allow(""),
+          alt: Joi.string().min(2).max(256).allow(""),
+        }),
+        address: Joi.object({
+          state: Joi.string().allow(""),
+          country: Joi.string().min(2).max(256).required(),
+          city: Joi.string().min(2).max(256).required(),
+          street: Joi.string().min(2).max(256).required(),
+          houseNumber: Joi.number().required(),
+          zip: Joi.number().allow(""),
+        }),
         isBusiness: Joi.boolean(),
       });
       const { error } = userSchema.validate(values, { abortEarly: false });
@@ -70,6 +82,7 @@ function Signup(params) {
       return errors;
     },
     onSubmit: async (values) => {
+      console.log("Submitting...", values);
       try {
         await userService.createUser({
           ...values,
@@ -82,8 +95,7 @@ function Signup(params) {
       }
     },
   });
-  console.log("Touched fields:", touched);
-  console.log("Errors:", errors);
+
   return (
     <div className="bg-success-subtle d-flex justify-content-center flex-column align-items-center">
       <Pageheader title="register" />
@@ -99,8 +111,8 @@ function Signup(params) {
           )}
           <div className="row g-3">
             <Input
-              {...getFieldProps("firstName")}
-              error={touched.firstName ? errors.firstName : ""}
+              {...getFieldProps("name.first")}
+              error={touched?.name?.first ? errors?.name?.first : ""}
               type="text"
               label="First name"
               placeholder="first name"
@@ -108,16 +120,16 @@ function Signup(params) {
             />
 
             <Input
-              {...getFieldProps("lastName")}
-              error={touched.lastName ? errors.lastName : ""}
+              {...getFieldProps("name.last")}
+              error={touched?.name?.last ? errors?.name?.last : ""}
               type="text"
               label="Last name"
               placeholder="last name"
               required
             />
             <Input
-              {...getFieldProps("middleName")}
-              error={touched.middleName ? errors.middleName : ""}
+              {...getFieldProps("name.middle")}
+              error={touched?.name?.middle ? errors?.name?.middle : ""}
               type="text"
               label="Middle name"
               placeholder="middle name"
@@ -151,43 +163,43 @@ function Signup(params) {
           </div>
           <div className="row g-3 mt-5">
             <Input
-              error={touched.image ? errors.image : ""}
-              {...getFieldProps("image")}
+              error={touched?.image?.url ? errors?.image?.url : ""}
+              {...getFieldProps("image.url")}
               type="text"
               placeholder="url image"
             />
             <Input
-              {...getFieldProps("altImage")}
-              error={touched.altImage ? errors.altImage : ""}
+              {...getFieldProps("image.alt")}
+              error={touched?.image?.alt ? errors?.image?.alt : ""}
               type="text"
               placeholder="alt image"
             />
             <Input
-              {...getFieldProps("state")}
-              error={touched.state ? errors.state : ""}
+              {...getFieldProps("address.state")}
+              error={touched?.address?.state ? errors?.address?.state : ""}
               type="text"
               placeholder="state"
             />
           </div>
           <div className="row g-3 mt-2">
             <Input
-              {...getFieldProps("country")}
-              error={touched.country ? errors.country : ""}
+              {...getFieldProps("address.country")}
+              error={touched?.address?.country ? errors?.address?.country : ""}
               type="text"
               placeholder="country"
               required
             />
             <Input
-              {...getFieldProps("city")}
-              error={touched.city ? errors.city : ""}
+              {...getFieldProps("address.city")}
+              error={touched?.address?.city ? errors?.address?.city : ""}
               type="text"
               placeholder="city"
               required
             />
 
             <Input
-              {...getFieldProps("street")}
-              error={touched.street ? errors.street : ""}
+              {...getFieldProps("address.street")}
+              error={touched?.address?.street ? errors?.address?.street : ""}
               type="text"
               placeholder="street"
               required
@@ -195,15 +207,19 @@ function Signup(params) {
           </div>
           <div className="row g-3 mt-2">
             <Input
-              {...getFieldProps("houseNumber")}
-              error={touched.houseNumber ? errors.houseNumber : ""}
+              {...getFieldProps("address.houseNumber")}
+              error={
+                touched?.address?.houseNumber
+                  ? errors?.address?.houseNumber
+                  : ""
+              }
               type="number"
               placeholder="House Number"
               required
             />
             <Input
-              {...getFieldProps("zip")}
-              error={touched.zip ? errors.zip : ""}
+              {...getFieldProps("address.zip")}
+              error={touched?.address?.zip ? errors?.address?.zip : ""}
               type="number"
               placeholder="zip"
             />
@@ -215,7 +231,6 @@ function Signup(params) {
                     type="checkbox"
                     name="isBusiness"
                     label="Signup as business"
-                   
                   ></Input>
                 </div>
               </div>
