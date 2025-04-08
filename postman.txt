@@ -1,0 +1,8 @@
+request structure:
+
+    documentation only: name/description
+    
+    type
+    url
+    header - optional
+    body - optional

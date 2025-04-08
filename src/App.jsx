@@ -9,7 +9,14 @@ import Footer from "./components/footer";
 import NavBar from "./components/navbar";
 import Signup from "./pages/signup";
 import Signin from "./pages/signin";
+import userService from "./services/userService";
+
 function App() {
+  const [user, setUser] = useState(null);
+  const login = async (credentials) => {
+    const response = await userService.login(credentials);
+    setUser(userService.getUser());
+  };
   return (
     <div className="min-vh-100 d-flex flex-column">
       <header>

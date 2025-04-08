@@ -5,17 +5,12 @@ import Joi from "joi";
 import userService from "../services/userService";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+
 function Signup(params) {
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState("");
-  const {
-    getFieldProps,
-    handleSubmit,
+  const [serverError, setServerError] = useState(undefined);
 
-    touched,
-    errors,
-    isValid,
-  } = useFormik({
+  const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
     validateOnMount: true,
     initialValues: {
       name: {
@@ -40,34 +35,32 @@ function Signup(params) {
       },
       isBusiness: false,
     },
-    validate(values) {
+    validate: (values) => {
       const userSchema = Joi.object({
         name: Joi.object({
           first: Joi.string().min(2).max(256).required(),
           middle: Joi.string().min(2).max(256).allow(""),
           last: Joi.string().min(2).max(256).required(),
-        }),
+        }).required(),
         email: Joi.string().min(6).max(255).required().email({ tlds: false }),
         password: Joi.string()
           .min(9)
           .max(30)
           .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-])/)
           .required(),
-        phone: Joi.string()
-          .pattern(/^[0-9]{9}$/)
-          .required(),
+        phone: Joi.string().required(),
         image: Joi.object({
           url: Joi.string().allow(""),
           alt: Joi.string().min(2).max(256).allow(""),
-        }),
+        }).optional(),
         address: Joi.object({
           state: Joi.string().allow(""),
           country: Joi.string().min(2).max(256).required(),
           city: Joi.string().min(2).max(256).required(),
           street: Joi.string().min(2).max(256).required(),
           houseNumber: Joi.number().required(),
-          zip: Joi.number().allow(""),
-        }),
+          zip: Joi.number().required(),
+        }).required(),
         isBusiness: Joi.boolean(),
       });
       const { error } = userSchema.validate(values, { abortEarly: false });
@@ -78,11 +71,12 @@ function Signup(params) {
       for (const detail of error.details) {
         errors[detail.path[0]] = detail.message;
       }
-
+      console.log(errors);
       return errors;
     },
+
     onSubmit: async (values) => {
-      console.log("Submitting...", values);
+      console.log("run");
       try {
         await userService.createUser({
           ...values,
@@ -222,6 +216,7 @@ function Signup(params) {
               error={touched?.address?.zip ? errors?.address?.zip : ""}
               type="number"
               placeholder="zip"
+              required
             />
             <div className="row mt-3 justify-content-center align-items-center">
               <div className="col d-flex justify-content-center align-items-center ">
