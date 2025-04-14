@@ -31,8 +31,10 @@ async function getUserbyid(userid) {
 }
 function getUser() {
     const token = getJwt()
-    console.log(jwtDecode(token));
+
+
 }
+
 getUser()
 
 

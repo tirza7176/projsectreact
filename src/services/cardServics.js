@@ -1,7 +1,6 @@
 import httpService from "./httpService";
-function getAllCards() {
-    return httpService.get("/cards")
-    console.log(getAllCards());
+function getAllCards(cards) {
+    return httpService.get("/cards", cards)
 
 }
 getAllCards()
