@@ -8,7 +8,7 @@ import { Navigate, useNavigate } from "react-router";
 function Signin() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
-  const { login, user } = useAuth;
+  const { login, user } = useAuth();
   const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
     validateOnMount: true,
     initialValues: {
@@ -45,9 +45,7 @@ function Signin() {
       }
     },
   });
-  if (user) {
-    return <Navigate to="/" />;
-  }
+
   return (
     <div className="container bs-success-bg-subtle">
       <Pageheader title="Sign-in" description="Sign in with your account" />

@@ -2,13 +2,14 @@ import Pageheader from "../components/pageheader";
 import Input from "../components/input";
 import { useFormik } from "formik";
 import Joi from "joi";
-import userService from "../services/userService";
+import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 function Signup(params) {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(undefined);
+  const { createUser, user } = useAuth();
 
   const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
     validateOnMount: true,
@@ -78,7 +79,7 @@ function Signup(params) {
     onSubmit: async (values) => {
       console.log("run");
       try {
-        await userService.createUser({
+        await createUser({
           ...values,
         });
         navigate("/");
