@@ -2,12 +2,13 @@ import Pageheader from "../components/pageheader";
 import Input from "../components/input";
 import { useFormik } from "formik";
 import Joi from "joi";
-import userService from "../services/userService";
+import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 function Signin() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
+  const { login, user } = useAuth;
   const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
     validateOnMount: true,
     initialValues: {
@@ -34,10 +35,8 @@ function Signin() {
       return errors;
     },
     onSubmit: async (values) => {
-      console.log(errors);
-
       try {
-        await userService.login(values);
+        await login(values);
         navigate("/");
       } catch (err) {
         if (err.response?.status === 400) {
@@ -46,6 +45,9 @@ function Signin() {
       }
     },
   });
+  if (user) {
+    return <Navigate to="/" />;
+  }
   return (
     <div className="container bs-success-bg-subtle">
       <Pageheader title="Sign-in" description="Sign in with your account" />

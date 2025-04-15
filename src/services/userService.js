@@ -12,6 +12,9 @@ async function login(credentials) {
 
     return response;
 }
+function logout() {
+    setToken(null)
+}
 function setToken(token) {
     localStorage.setItem(TOKEN_KEY, token);
     refreshToken()
@@ -30,8 +33,12 @@ async function getUserbyid(userid) {
 
 }
 function getUser() {
-    const token = getJwt()
-
+    try {
+        const token = getJwt();
+        return jwtDecode(token)
+    } catch {
+        return null;
+    }
 
 }
 
@@ -41,6 +48,7 @@ getUser()
 const userService = {
     createUser,
     login,
+    logout,
     getJwt,
     getUser,
     getUserbyid

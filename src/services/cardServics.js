@@ -3,7 +3,7 @@ function getAllCards(cards) {
     return httpService.get("/cards", cards)
 
 }
-getAllCards()
+getAllCards();
 
 
 

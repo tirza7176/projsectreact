@@ -11,13 +11,13 @@ function CardItem() {
       <p>cardnumber</p>
       <div className="card-body">
         <a href="#" className="card-link">
-          <i class="bi bi-trash3-fill"></i>
+          <i className="bi bi-trash3-fill"></i>
         </a>
         <a href="#" className="card-link">
-          <i class="bi bi-telephone-fill"></i>
+          <i className="bi bi-telephone-fill"></i>
         </a>
         <a href="#" className="card-link">
-          <i class="bi bi-heart-fill"></i>
+          <i className="bi bi-heart-fill"></i>
         </a>
       </div>
     </div>
