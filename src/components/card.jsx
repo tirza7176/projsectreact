@@ -4,24 +4,34 @@ function CardItem({ card }) {
   const { title, subtitle, description, phone, image, address, bizNumber } =
     card;
   return (
-    <div className="card " style={{ width: "18rem" }}>
+    <div className="card text-center shadow " style={{ width: "18rem" }}>
       <img
-        src={image?.url || "https://via.placeholder.com/150"}
+        src={image?.url || "../public/defult.png"}
         className="card-img-top"
         alt={image?.alt || "Card image"}
       />
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <p className="card-text">{description}</p>
+      <div className="card-body d-flex flex-column justify-content-between">
+        <div>
+          <h5 className="card-title">{title}</h5>
+          <p className="card-text">{description}</p>
+        </div>
+        <div className="mt-3">
+          <p>
+            <strong>phone: </strong>
+            {phone}
+          </p>
+          <p>
+            <strong> address:</strong>
+            {`${address.city},
+            ${address.street},
+            ${address.houseNumber}`}
+          </p>
+          <p>
+            <strong>biz number:</strong> {bizNumber}
+          </p>
+        </div>
       </div>
-      <p>{phone}</p>
-      <p>
-        {address.city}
-        {address.srteet}
-        {address.houseNumber}
-      </p>
-      <p>biz number:{bizNumber}</p>
-      <div className="card-body">
+      <div className="card-body d-flex justify-content-around">
         <Link to={"my-cards-delete"} className="card-link">
           <i className="bi bi-trash3-fill"></i>
         </Link>

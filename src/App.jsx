@@ -10,6 +10,7 @@ import NavBar from "./components/navbar";
 import Signup from "./pages/signup";
 import Signin from "./pages/signin";
 import SignOut from "./pages/signout";
+import Mycards from "./pages/mycards";
 function App() {
   return (
     <div className="min-vh-100 d-flex flex-column">
@@ -23,6 +24,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signout" element={<SignOut />} />
+          <Route path="/mycards" element={<Mycards />} />
         </Routes>
       </main>
       <Footer />
