@@ -1,8 +1,10 @@
+import { Link } from "react-router";
+
 function CardItem({ card }) {
   const { title, subtitle, description, phone, image, address, bizNumber } =
     card;
   return (
-    <div className="card" style={{ width: "18rem" }}>
+    <div className="card " style={{ width: "18rem" }}>
       <img
         src={image?.url || "https://via.placeholder.com/150"}
         className="card-img-top"
@@ -18,17 +20,17 @@ function CardItem({ card }) {
         {address.srteet}
         {address.houseNumber}
       </p>
-      <p>cardnumber</p>
+      <p>biz number:{bizNumber}</p>
       <div className="card-body">
-        <a href="#" className="card-link">
+        <Link to={"my-cards-delete"} className="card-link">
           <i className="bi bi-trash3-fill"></i>
-        </a>
-        <a href="#" className="card-link">
+        </Link>
+        <Link to={"phone"} className="card-link">
           <i className="bi bi-telephone-fill"></i>
-        </a>
-        <a href="#" className="card-link">
+        </Link>
+        <Link to={"my-cards-favorite"} className="card-link">
           <i className="bi bi-heart-fill"></i>
-        </a>
+        </Link>
       </div>
     </div>
   );
