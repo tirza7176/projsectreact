@@ -1,11 +1,13 @@
-import Pageheader from "../components/pageheader";
+import PageHeader from "../components/pageheader";
 import CardItem from "../components/card";
 import cardService from "../services/cardServics";
 import { useContext, useState, useEffect } from "react";
+import { Navigate, useNavigate } from "react-router";
 function Mycards() {
   const { user } = useContext(AuthContext);
   const [cards, setCards] = useState([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchMyCards() {
       try {
@@ -23,7 +25,7 @@ function Mycards() {
   if (!user) return <p>Log in to see your cards.</p>;
   return (
     <div className="container bs-success-bg-subtle">
-      <Pageheader
+      <PageHeader
         title="welcome to my cards"
         description="it is only your cards"
       />

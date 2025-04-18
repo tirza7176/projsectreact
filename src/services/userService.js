@@ -52,6 +52,7 @@ const userService = {
     logout,
     getJwt,
     getUser,
-    getUserbyid
+    getUserbyid,
+    refreshToken
 };
 export default userService;

@@ -74,10 +74,19 @@ function Signin() {
             required
           />
         </div>
+        <div className="row mt-3 mb-3">
+          <button type="button" className=" col-3  btn btn-outline-danger">
+            cancel
+          </button>
+
+          <button type="button" className=" col-3  btn btn-outline-secondary">
+            <i className="bi bi-arrow-repeat"></i>
+          </button>
+        </div>
         <button
           disabled={!isValid}
           type="submit"
-          className=" col-4 btn btn-outline-primary mt-5"
+          className=" col-3 btn btn-outline-primary mt-5"
         >
           send
         </button>

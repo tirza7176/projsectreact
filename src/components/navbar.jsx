@@ -35,7 +35,7 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/my-cards">
+              <NavLink className="nav-link text-white" to="/mycards">
                 My cards
               </NavLink>
             </li>

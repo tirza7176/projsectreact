@@ -1,4 +1,5 @@
 import httpService from "./httpService";
+import userService from "./userService";
 function getAllCards() {
     return httpService.get("/cards")
 
@@ -7,12 +8,27 @@ function getAllCards() {
 function getMyCards() {
     return httpService.get("/cards/my-cards")
 }
-function getCardByid(id) {
-    return httpService.get(`/cards/${id}`);
+async function getCardByid(id) {
+    try {
+        const response = await httpService.get(`/cards/${id}`);
+        return response.data;
 
+    } catch (error) {
+        console.log(error);
+
+    }
 }
-function createCard(cardData) {
-    return httpService.post("/cards", cardData)
+async function createCard(cardData) {
+    userService.refreshToken();
+    try {
+        const response = httpService.post("/cards", cardData)
+        return response
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
 }
 function updateCard(cardId, updateCardData) {
     return httpService.put(`/cards/${cardId}`, updateCardData)
