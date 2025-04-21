@@ -5,9 +5,17 @@ function getAllCards() {
 
 }
 
-function getMyCards() {
-    return httpService.get("/cards/my-cards")
+async function getMyCards() {
+    try {
+        const response = await httpService.get("/cards/my-cards");
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        throw error
+    }
 }
+
 async function getCardByid(id) {
     try {
         const response = await httpService.get(`/cards/${id}`);
@@ -21,7 +29,7 @@ async function getCardByid(id) {
 async function createCard(cardData) {
     userService.refreshToken();
     try {
-        const response = httpService.post("/cards", cardData)
+        const response = await httpService.post("/cards", cardData)
         return response
     } catch (error) {
 
@@ -33,10 +41,15 @@ async function createCard(cardData) {
 function updateCard(cardId, updateCardData) {
     return httpService.put(`/cards/${cardId}`, updateCardData)
 }
-function likeCard(cardId) {
+async function likeCard(cardId) {
+    try {
+        const response = await httpService.patch(`/cards/${cardId}`)
+        return response.data
+    }
+    catch (error) {
+        console.log(error);
 
-    return httpService.patch(`/cards/${cardId}`);
-
+    }
 }
 function deleteCard(cardId) {
     return httpService.delete(`/cards/${cardId}`);

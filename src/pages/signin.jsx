@@ -45,7 +45,9 @@ function Signin() {
       }
     },
   });
-
+  if (user) {
+    return <Navigate to="/" />;
+  }
   return (
     <div className="container bs-success-bg-subtle">
       <Pageheader title="Sign-in" description="Sign in with your account" />

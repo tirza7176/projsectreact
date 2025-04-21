@@ -1,8 +1,19 @@
+import { Button } from "bootstrap";
 import { Link } from "react-router";
+import cardService from "../services/cardServics";
+import { createLogger } from "vite";
+import { authContext } from "../contexts/AuthContext";
 
 function CardItem({ card }) {
+  const { user } = useContext(authContext);
   const { title, subtitle, description, phone, image, address, bizNumber } =
     card;
+  function handleLike() {
+    const response = cardService.likeCard(card.id);
+    console.log(user.id);
+    console.log(response.likes);
+  }
+
   return (
     <div className="card text-center shadow " style={{ width: "18rem" }}>
       <img
@@ -32,9 +43,9 @@ function CardItem({ card }) {
         </div>
       </div>
       <div className="card-body d-flex justify-content-around">
-        <Link to={"my-cards-delete"} className="card-link">
+        <button onclick={handleLike}>
           <i className="bi bi-trash3-fill"></i>
-        </Link>
+        </button>
         <Link to={"phone"} className="card-link">
           <i className="bi bi-telephone-fill"></i>
         </Link>
