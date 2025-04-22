@@ -33,6 +33,9 @@ function CreateCard() {
     },
     validate: (values) => {
       const cardSchema = Joi.object({
+        title: Joi.string().min(2).max(256).required(),
+        subtitle: Joi.string().min(2).max(256).required(),
+        description: Joi.string().min(2).max(1024).required(),
         email: Joi.string().min(6).max(255).required().email({ tlds: false }),
         phone: Joi.string().required(),
         web: Joi.string().min(14).max(256).allow(""),
@@ -77,7 +80,7 @@ function CreateCard() {
   });
 
   return (
-    <div className="bg-success-subtle d-flex justify-content-center flex-column align-items-center">
+    <div className="mt-5 bg-success-subtle d-flex justify-content-center flex-column align-items-center">
       <Pageheader title="Create new card" />
       <div className="mt-5">
         <form
@@ -98,8 +101,7 @@ function CreateCard() {
               placeholder="title"
               required
             />
-          </div>
-          <div className="row g-3">
+
             <Input
               {...getFieldProps("subtitle")}
               error={touched.subtitle ? errors.subtitle : ""}
@@ -108,8 +110,7 @@ function CreateCard() {
               placeholder="subtitle"
               required
             />
-          </div>
-          <div className="row g-3">
+
             <Input
               {...getFieldProps("description")}
               error={touched.description ? errors.description : ""}
@@ -214,7 +215,7 @@ function CreateCard() {
                   cancel
                 </button>
                 <button
-                  type="button"
+                  type="reset"
                   className=" col-4 btn btn-outline-secondary"
                 >
                   <i className="bi bi-arrow-repeat"></i>

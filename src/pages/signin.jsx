@@ -45,11 +45,10 @@ function Signin() {
       }
     },
   });
-  if (user) {
-    return <Navigate to="/" />;
-  }
+
   return (
     <div className="container bs-success-bg-subtle">
+      {user && <Navigate to="/" />}
       <Pageheader title="Sign-in" description="Sign in with your account" />
       <form
         onSubmit={handleSubmit}

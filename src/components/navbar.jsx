@@ -30,13 +30,18 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/fav-cards">
+              <NavLink className="nav-link text-white" to="/favcard">
                 Fav cards
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link text-white" to="/mycards">
                 My cards
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link text-white" to="/addnewcard">
+                Add new card
               </NavLink>
             </li>
             <li className="nav-item">

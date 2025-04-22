@@ -1,19 +1,30 @@
-import { Button } from "bootstrap";
 import { Link } from "react-router";
 import cardService from "../services/cardServics";
-import { createLogger } from "vite";
+import { useContext, useState, useEffect } from "react";
 import { authContext } from "../contexts/AuthContext";
 
 function CardItem({ card }) {
   const { user } = useContext(authContext);
   const { title, subtitle, description, phone, image, address, bizNumber } =
     card;
-  function handleLike() {
-    const response = cardService.likeCard(card.id);
-    console.log(user.id);
-    console.log(response.likes);
+  const [isLike, setIslike] = useState(false);
+  useEffect(() => {
+    if (user && card.likes.includes(user._id)) {
+      setIslike(true);
+    }
+  }, [user, card.likes]);
+  async function handleLike() {
+    try {
+      const response = await cardService.likeCard(card._id);
+      console.log(user._id);
+      console.log(response.likes);
+      const updatedLikes = response.likes || [];
+      const liked = updatedLikes.includes(user._id);
+      setIslike(liked);
+    } catch (error) {
+      console.error("Like failed:", err);
+    }
   }
-
   return (
     <div className="card text-center shadow " style={{ width: "18rem" }}>
       <img
@@ -43,17 +54,22 @@ function CardItem({ card }) {
         </div>
       </div>
       <div className="card-body d-flex justify-content-around">
-        <button onclick={handleLike}>
-          <i className="bi bi-trash3-fill"></i>
+        <button onClick={handleLike}>
+          <i
+            className={`bi ${
+              isLike ? "bi-heart-fill text-danger" : "bi-heart"
+            }`}
+          ></i>
         </button>
         <Link to={"phone"} className="card-link">
           <i className="bi bi-telephone-fill"></i>
         </Link>
-        <Link to={"my-cards-favorite"} className="card-link">
-          <i className="bi bi-heart-fill"></i>
-        </Link>
+        <button>
+          <i className="bi bi-trash3-fill"></i>
+        </button>
       </div>
     </div>
   );
 }
+
 export default CardItem;

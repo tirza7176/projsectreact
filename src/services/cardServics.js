@@ -48,7 +48,7 @@ async function likeCard(cardId) {
     }
     catch (error) {
         console.log(error);
-
+        console.error("Server said:", error.response?.data)
     }
 }
 function deleteCard(cardId) {

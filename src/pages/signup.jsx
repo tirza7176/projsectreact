@@ -90,9 +90,7 @@ function Signup(params) {
       }
     },
   });
-  if (user) {
-    return <Navigate to="/" />;
-  }
+
   return (
     <div className="bg-success-subtle d-flex justify-content-center flex-column align-items-center">
       <Pageheader title="register" />
