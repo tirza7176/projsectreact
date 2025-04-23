@@ -6,12 +6,15 @@ function createUser(user) {
     return httpService.post("/users", user)
 }
 async function login(credentials) {
-    const response = await httpService.post("/users/login", credentials);
-    console.log("Login response from server:", response.data)
-    setToken(response.data)
+    try {
+        const response = await httpService.post("/users/login", credentials);
+        console.log("Login response from server:", response.data)
+        setToken(response.data)
+        return response;
+    } catch (error) {
+        console.log(error);
 
-
-    return response;
+    }
 }
 function logout() {
     setToken(null)

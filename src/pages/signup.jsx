@@ -93,6 +93,7 @@ function Signup(params) {
 
   return (
     <div className="bg-success-subtle d-flex justify-content-center flex-column align-items-center">
+      {user && <Navigate to="/" />}
       <Pageheader title="register" />
       <div className="mt-5">
         <form

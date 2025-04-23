@@ -13,6 +13,7 @@ import SignOut from "./pages/signout";
 import Mycards from "./pages/mycards";
 import CreateCard from "./pages/createCard";
 import FavCards from "./pages/favcard";
+import EditCard from "./pages/editCard";
 function App() {
   return (
     <div className="min-vh-100 d-flex flex-column">
@@ -28,6 +29,7 @@ function App() {
           <Route path="/signout" element={<SignOut />} />
           <Route path="/mycards" element={<Mycards />} />
           <Route path="/addnewcard" element={<CreateCard />} />
+          <Route path="/editCard" element={<EditCard />} />
           <Route path="/favcard" element={<FavCards />} />
         </Routes>
       </main>

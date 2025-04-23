@@ -2,9 +2,11 @@ import { Link } from "react-router";
 import cardService from "../services/cardServics";
 import { useContext, useState, useEffect } from "react";
 import { authContext } from "../contexts/AuthContext";
+import { Navigate, useNavigate } from "react-router";
 
 function CardItem({ card }) {
   const { user } = useContext(authContext);
+  const navigate = useNavigate();
   const { title, subtitle, description, phone, image, address, bizNumber } =
     card;
   const [isLike, setIslike] = useState(false);
@@ -23,6 +25,13 @@ function CardItem({ card }) {
       setIslike(liked);
     } catch (error) {
       console.error("Like failed:", err);
+    }
+  }
+  async function handleDeleteCard() {
+    try {
+      const response = await cardService.deleteCard(card._id);
+    } catch (error) {
+      console.error(error);
     }
   }
   return (
@@ -61,12 +70,19 @@ function CardItem({ card }) {
             }`}
           ></i>
         </button>
+        {user?._id === card.user_id && (
+          <>
+            <button onClick={handleDeleteCard}>
+              <i className="bi bi-trash3-fill"></i>
+            </button>
+            <Link to={"editcard"} className="card-link">
+              <i className="bi bi-pencil-fill"></i>
+            </Link>
+          </>
+        )}
         <Link to={"phone"} className="card-link">
           <i className="bi bi-telephone-fill"></i>
         </Link>
-        <button>
-          <i className="bi bi-trash3-fill"></i>
-        </button>
       </div>
     </div>
   );

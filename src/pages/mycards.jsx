@@ -25,6 +25,7 @@ function Mycards() {
   }, [user]);
 
   if (!user) return <p>Log in to see your cards.</p>;
+
   return (
     <div className="container bs-success-bg-subtle">
       <PageHeader title="welcome to your personal area" />
