@@ -63,13 +63,15 @@ function CardItem({ card }) {
         </div>
       </div>
       <div className="card-body d-flex justify-content-around">
-        <button onClick={handleLike}>
-          <i
-            className={`bi ${
-              isLike ? "bi-heart-fill text-danger" : "bi-heart"
-            }`}
-          ></i>
-        </button>
+        {user && (
+          <button onClick={handleLike}>
+            <i
+              className={`bi ${
+                isLike ? "bi-heart-fill text-danger" : "bi-heart"
+              }`}
+            ></i>
+          </button>
+        )}
         {user?._id === card.user_id && (
           <>
             <button onClick={handleDeleteCard}>

@@ -1,6 +1,9 @@
 import { Link, NavLink } from "react-router";
 import Logo from "../components/logo";
+import { useAuth } from "../contexts/AuthContext";
+
 function Navbar() {
+  const { user } = useAuth();
   return (
     <nav
       className="navbar navbar-expand-md navbar bg-primary bg-opacity-75 shadow-sm "
@@ -29,27 +32,37 @@ function Navbar() {
                 About
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/favcard">
-                Fav cards
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/mycards">
-                My cards
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/addnewcard">
-                Add new card
-              </NavLink>
-            </li>
+            {user && (
+              <li className="nav-item">
+                <NavLink className="nav-link text-white" to="/favcard">
+                  Fav cards
+                </NavLink>
+              </li>
+            )}
 
-            <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/sand-box">
-                Sand box
-              </NavLink>
-            </li>
+            {user?.isBusiness && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link text-white" to="/mycards">
+                    My cards
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link text-white" to="/addnewcard">
+                    Add new card
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {user?.isAdmin && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link text-white" to="/sand-box">
+                    Sand box
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
           <div className="input-group w-25">
             <input
@@ -62,21 +75,26 @@ function Navbar() {
           <i className="bi bi-moon-fill"></i>
           <i className="bi bi-brightness-high"></i>
           <ul className="navbar-nav ms-auto mb-2 mb-md-0">
-            <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/signup">
-                Sign up
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/signin">
-                Login
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/signout">
-                logout
-              </NavLink>
-            </li>
+            {user ? (
+              <li className="nav-item">
+                <NavLink className="nav-link text-white" to="/signout">
+                  logout
+                </NavLink>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link text-white" to="/signup">
+                    Sign up
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link text-white" to="/signin">
+                    Login
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
