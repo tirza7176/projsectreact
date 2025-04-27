@@ -9,7 +9,7 @@ import { Navigate, useNavigate } from "react-router";
 function Signup(params) {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(undefined);
-  const { createUser, user } = useAuth();
+  const { createUser, user, login } = useAuth();
   const [success, setSuccess] = useState(false);
   const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
     validateOnMount: true,
@@ -82,6 +82,7 @@ function Signup(params) {
         await createUser({
           ...values,
         });
+        await login({ email: values.email, password: values.password });
         setSuccess(true);
         setTimeout(() => {
           navigate("/");

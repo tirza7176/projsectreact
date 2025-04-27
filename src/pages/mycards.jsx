@@ -6,6 +6,7 @@ import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 function Mycards() {
   const { user } = useAuth();
+
   const [cards, setCards] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();

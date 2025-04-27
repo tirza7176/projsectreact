@@ -16,7 +16,7 @@ async function getMyCards() {
     }
 }
 
-async function getCardByid(id) {
+async function getCard(id) {
     try {
         const response = await httpService.get(`/cards/${id}`);
         return response.data;
@@ -55,7 +55,7 @@ function deleteCard(cardId) {
 const cardService = {
     getAllCards,
     getMyCards,
-    getCardByid,
+    getCard,
     createCard,
     updateCard,
     likeCard,

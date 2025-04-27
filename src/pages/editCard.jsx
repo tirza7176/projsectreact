@@ -4,12 +4,15 @@ import { useFormik } from "formik";
 import Joi from "joi";
 import cardService from "../services/cardServics";
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
+import useCard from "../hooks/useCard";
 function EditCard() {
+  const { id } = useParams();
+  const card = useCard(id);
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState(undefined);
+  const [serverError, setServerError] = useState("");
 
-  const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
+  const form = useFormik({
     validateOnMount: true,
     initialValues: {
       title: "",
@@ -31,7 +34,7 @@ function EditCard() {
         zip: "",
       },
     },
-    validate: (values) => {
+    validate(values) {
       const cardSchema = Joi.object({
         title: Joi.string().min(2).max(256).required(),
         subtitle: Joi.string().min(2).max(256).required(),
@@ -64,12 +67,9 @@ function EditCard() {
       return errors;
     },
 
-    onSubmit: async (values) => {
-      console.log("run");
+    async onSubmit(values) {
       try {
-        await cardService.updateCard({
-          ...values,
-        });
+        await cardService.updateCard(id, values);
         navigate("/mycards");
       } catch (err) {
         if (err.response?.status === 400) {
@@ -78,13 +78,35 @@ function EditCard() {
       }
     },
   });
+  useEffect(() => {
+    if (!card) {
+      return;
+    }
+    form.setValues({
+      title: card.data.title,
+      subtitle: card.data.subtitle,
+      description: card.data.description,
+      email: card.data.email,
+      phone: card.data.phone,
+      web: card.data.web,
+      image: { url: card.data.image?.url, alt: card.data.image?.alt },
+      address: {
+        state: card.data.address?.state,
+        country: card.data.address?.country,
+        city: card.data.address?.city,
+        street: card.data.address?.street,
+        houseNumber: card.data.address?.houseNumber,
 
+        zip: card.data.address?.zip,
+      },
+    });
+  }, [card]);
   return (
     <div className=" mt-5 bg-success-subtle d-flex justify-content-center flex-column align-items-center">
       <Pageheader title="Edit my card" />
       <div className="mt-5">
         <form
-          onSubmit={handleSubmit}
+          onSubmit={form.handleSubmit}
           noValidate
           autoComplete="off"
           className="d-flex flex-column"
@@ -94,8 +116,8 @@ function EditCard() {
           )}
           <div className="row g-3">
             <Input
-              {...getFieldProps("title")}
-              error={touched.title ? errors.title : ""}
+              {...form.getFieldProps("title")}
+              error={form.touched.title && form.errors.title}
               type="text"
               label="title"
               placeholder="title"
@@ -103,8 +125,8 @@ function EditCard() {
             />
 
             <Input
-              {...getFieldProps("subtitle")}
-              error={touched.subtitle ? errors.subtitle : ""}
+              {...form.getFieldProps("subtitle")}
+              error={form.touched.subtitle && form.errors.subtitle}
               type="text"
               label="subtitle"
               placeholder="subtitle"
@@ -112,8 +134,8 @@ function EditCard() {
             />
 
             <Input
-              {...getFieldProps("description")}
-              error={touched.description ? errors.description : ""}
+              {...form.getFieldProps("description")}
+              error={form.touched.description && form.errors.description}
               type="text"
               label="description"
               placeholder="description"
@@ -122,16 +144,16 @@ function EditCard() {
           </div>
           <div className="row g-3">
             <Input
-              {...getFieldProps("phone")}
-              error={touched.phone ? errors.phone : ""}
+              {...form.getFieldProps("phone")}
+              error={form.touched.phone && form.errors.phone}
               type="text"
               label="phone"
               placeholder="000-000000"
               required
             />
             <Input
-              {...getFieldProps("email")}
-              error={touched.email ? errors.email : ""}
+              {...form.getFieldProps("email")}
+              error={form.touched.email && form.errors.email}
               type="email"
               label="Email"
               placeholder="mail@example.com"
@@ -139,8 +161,8 @@ function EditCard() {
             />
 
             <Input
-              {...getFieldProps("web")}
-              error={touched.web ? errors.web : ""}
+              {...form.getFieldProps("web")}
+              error={form.touched.web && form.errors.web}
               type="text"
               label="web"
               placeholder="web"
@@ -148,42 +170,44 @@ function EditCard() {
           </div>
           <div className="row g-3 mt-5">
             <Input
-              error={touched?.image?.url ? errors?.image?.url : ""}
-              {...getFieldProps("image.url")}
+              error={form.touched.image.url && form.errors.image.url}
+              {...form.getFieldProps("image.url")}
               type="text"
               placeholder="url image"
             />
             <Input
-              {...getFieldProps("image.alt")}
-              error={touched?.image?.alt ? errors?.image?.alt : ""}
+              {...form.getFieldProps("image.alt")}
+              error={form.touched.image.alt && form.errors.image.alt}
               type="text"
               placeholder="alt image"
             />
             <Input
-              {...getFieldProps("address.state")}
-              error={touched?.address?.state ? errors?.address?.state : ""}
+              {...form.getFieldProps("address.state")}
+              error={form.touched.address.state && form.errors.address.state}
               type="text"
               placeholder="state"
             />
           </div>
           <div className="row g-3 mt-2">
             <Input
-              {...getFieldProps("address.country")}
-              error={touched?.address?.country ? errors?.address?.country : ""}
+              {...form.getFieldProps("address.country")}
+              error={
+                form.touched.address.country && form.errors.address.country
+              }
               type="text"
               placeholder="country"
               required
             />
             <Input
-              {...getFieldProps("address.city")}
-              error={touched?.address?.city ? errors?.address?.city : ""}
+              {...form.getFieldProps("address.city")}
+              error={form.touched.address.city && form.errors.address.city}
               type="text"
               placeholder="city"
               required
             />
             <Input
-              {...getFieldProps("address.street")}
-              error={touched?.address?.street ? errors?.address?.street : ""}
+              {...form.getFieldProps("address.street")}
+              error={form.touched.address.street && form.errors.address.street}
               type="text"
               placeholder="street"
               required
@@ -191,19 +215,18 @@ function EditCard() {
           </div>
           <div className="row g-3 mt-2">
             <Input
-              {...getFieldProps("address.houseNumber")}
+              {...form.getFieldProps("address.houseNumber")}
               error={
-                touched?.address?.houseNumber
-                  ? errors?.address?.houseNumber
-                  : ""
+                form.touched.address.houseNumber &&
+                form.errors.address.houseNumber
               }
               type="number"
               placeholder="House Number"
               required
             />
             <Input
-              {...getFieldProps("address.zip")}
-              error={touched?.address?.zip ? errors?.address?.zip : ""}
+              {...form.getFieldProps("address.zip")}
+              error={form.touched.address.zip && form.errors.address.zip}
               type="number"
               placeholder="zip"
               required
@@ -211,7 +234,11 @@ function EditCard() {
             <div className="row mt-3 justify-content-center align-items-center">
               <div className="col d-flex justify-content-center align-items-center "></div>
               <div className="row mt-3 mb-3">
-                <button type="button" className=" col-4 btn btn-outline-danger">
+                <button
+                  type="button"
+                  className=" col-4 btn btn-outline-danger"
+                  onClick={() => navigate("/my-cards")}
+                >
                   cancel
                 </button>
                 <button
@@ -221,11 +248,11 @@ function EditCard() {
                   <i className="bi bi-arrow-repeat"></i>
                 </button>
                 <button
-                  disabled={!isValid}
+                  disabled={!form.isValid}
                   type="submit"
                   className=" col-4 btn btn-outline-primary"
                 >
-                  send
+                  update card
                 </button>
               </div>
             </div>
