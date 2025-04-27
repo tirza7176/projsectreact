@@ -8,7 +8,7 @@ import { Navigate, useNavigate } from "react-router";
 function CreateCard() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(undefined);
-
+  const [success, setSuccess] = useState(false);
   const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
     validateOnMount: true,
     initialValues: {
@@ -70,7 +70,10 @@ function CreateCard() {
         await cardService.createCard({
           ...values,
         });
-        navigate("/mycards");
+        setSuccess(true);
+        setTimeout(() => {
+          navigate("/mycards");
+        }, 3000);
       } catch (err) {
         if (err.response?.status === 400) {
           setServerError(err.response.data);
@@ -82,6 +85,11 @@ function CreateCard() {
   return (
     <div className="mt-5 bg-success-subtle d-flex justify-content-center flex-column align-items-center">
       <Pageheader title="Create new card" />
+      {success && (
+        <div className="alert alert-info" role="alert">
+          Card created successfully!
+        </div>
+      )}
       <div className="mt-5">
         <form
           onSubmit={handleSubmit}
@@ -92,6 +100,7 @@ function CreateCard() {
           {serverError && (
             <div className="alert-alert-danger">{serverError}</div>
           )}
+
           <div className="row g-3">
             <Input
               {...getFieldProps("title")}

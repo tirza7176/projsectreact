@@ -10,7 +10,7 @@ function Signup(params) {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(undefined);
   const { createUser, user } = useAuth();
-
+  const [success, setSuccess] = useState(false);
   const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
     validateOnMount: true,
     initialValues: {
@@ -82,7 +82,10 @@ function Signup(params) {
         await createUser({
           ...values,
         });
-        navigate("/");
+        setSuccess(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       } catch (err) {
         if (err.response?.status === 400) {
           setServerError(err.response.data);
@@ -93,8 +96,15 @@ function Signup(params) {
 
   return (
     <div className="bg-success-subtle d-flex justify-content-center flex-column align-items-center">
-      {user && <Navigate to="/" />}
-      <Pageheader title="register" />
+      <Pageheader
+        title="register"
+        description="Fill in your details to register on the site"
+      />
+      {success && (
+        <div className="alert alert-info" role="alert">
+          User successfully created
+        </div>
+      )}
       <div className="mt-5">
         <form
           onSubmit={handleSubmit}

@@ -1,9 +1,11 @@
 import { Link, NavLink } from "react-router";
 import Logo from "../components/logo";
 import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
 
 function Navbar() {
   const { user } = useAuth();
+  const [input, setInput] = useState("");
   return (
     <nav
       className="navbar navbar-expand-md navbar bg-primary bg-opacity-75 shadow-sm "
@@ -70,6 +72,8 @@ function Navbar() {
               className="form-control"
               placeholder="search"
               aria-label="search"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
             ></input>
           </div>
           <i className="bi bi-moon-fill"></i>

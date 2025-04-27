@@ -56,7 +56,11 @@ function Signin() {
         autoComplete="off"
         className="d-flex flex-column"
       >
-        {serverError && <div className="alert-alert-danger">{serverError}</div>}
+        {serverError && (
+          <div className="w-25 alert alert-danger">
+            {"Please enter a valid email or password"}
+          </div>
+        )}
         <div className="row g-3">
           <Input
             {...getFieldProps("email")}

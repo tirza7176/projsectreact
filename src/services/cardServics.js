@@ -32,9 +32,7 @@ async function createCard(cardData) {
         const response = await httpService.post("/cards", cardData)
         return response
     } catch (error) {
-
-        console.log(error);
-
+        throw error;
     }
 
 }

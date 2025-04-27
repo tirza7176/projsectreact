@@ -13,7 +13,7 @@ async function login(credentials) {
         return response;
     } catch (error) {
         console.log(error);
-
+        throw error;
     }
 }
 function logout() {

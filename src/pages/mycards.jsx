@@ -29,11 +29,16 @@ function Mycards() {
   return (
     <div className="container bs-success-bg-subtle">
       <PageHeader title="welcome to your personal area" />
+
       <div className="d-flex gap-3 flex-wrap justify-content-center">
         {cards.length === 0 ? (
           <p>There are no cards for your user.</p>
         ) : (
-          cards.map((card) => <CardItem key={card._id} card={card} />)
+          cards
+            /*.filter((card) => card.toLowerCase().includes(Input.toLowerCase))*/
+            .map((card) => {
+              return <CardItem key={card._id} card={card} />;
+            })
         )}
       </div>
     </div>
