@@ -6,13 +6,15 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { BrowserRouter } from "react-router";
 import App from "./App.jsx";
 import { AuthProvider } from "./contexts/AuthContext";
-
+import { SearchProvider } from "./contexts/searchprovider.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <SearchProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </SearchProvider>
     </BrowserRouter>
   </StrictMode>
 );

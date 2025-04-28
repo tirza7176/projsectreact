@@ -4,9 +4,10 @@ import cardService from "../services/cardServics";
 import { useContext, useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
+import { useSearch } from "../contexts/searchprovider";
 function Mycards() {
   const { user } = useAuth();
-
+  const { inputSearch } = useSearch();
   const [cards, setCards] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -36,10 +37,15 @@ function Mycards() {
           <p>There are no cards for your user.</p>
         ) : (
           cards
-            /*.filter((card) => card.toLowerCase().includes(Input.toLowerCase))*/
-            .map((card) => {
-              return <CardItem key={card._id} card={card} />;
+            .filter((card) => {
+              const searchTerm = inputSearch.toLowerCase();
+              return (
+                card.title.toLowerCase().includes(searchTerm) ||
+                card.subtitle.toLowerCase().includes(searchTerm) ||
+                card.bizNumber.toString().includes(searchTerm)
+              );
             })
+            .map((card) => <CardItem key={card._id} card={card} />)
         )}
       </div>
     </div>

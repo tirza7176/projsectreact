@@ -3,11 +3,12 @@ import CardItem from "../components/card";
 import cardService from "../services/cardServics";
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useSearch } from "../contexts/searchprovider";
 function FavCards() {
   const [cards, setCards] = useState([]);
   const [error, setError] = useState("");
   const { user } = useAuth();
-
+  const { inputSearch } = useSearch();
   const fetchFavCards = async () => {
     console.log(user._id);
 
@@ -41,7 +42,16 @@ function FavCards() {
         {cards.length === 0 ? (
           <p>There are no favorite cards.</p>
         ) : (
-          cards.map((card) => <CardItem key={card._id} card={card} />)
+          cards
+            .filter((card) => {
+              const searchTerm = inputSearch.toLowerCase();
+              return (
+                card.title.toLowerCase().includes(searchTerm) ||
+                card.subtitle.toLowerCase().includes(searchTerm) ||
+                card.bizNumber.toString().includes(searchTerm)
+              );
+            })
+            .map((card) => <CardItem key={card._id} card={card} />)
         )}
       </div>
     </div>

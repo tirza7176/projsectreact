@@ -2,9 +2,11 @@ import Pageheader from "../components/pageheader";
 import CardItem from "../components/card";
 import cardService from "../services/cardServics";
 import { useState, useEffect } from "react";
+import { useSearch } from "../contexts/searchprovider";
 function Home() {
   const [cards, setCards] = useState([]);
   const [error, setError] = useState("");
+  const { inputSearch } = useSearch();
   useEffect(() => {
     async function fetchCards() {
       try {
@@ -25,9 +27,18 @@ function Home() {
         description="you can find business cards from all categories."
       />
       <div className="d-flex gap-3 flex-wrap justify-content-center">
-        {cards.map((card) => (
-          <CardItem key={card._id} card={card} />
-        ))}
+        {cards
+          .filter((card) => {
+            const searchTerm = inputSearch.toLowerCase();
+            return (
+              card.title.toLowerCase().includes(searchTerm) ||
+              card.subtitle.toLowerCase().includes(searchTerm) ||
+              card.bizNumber.toString().includes(searchTerm)
+            );
+          })
+          .map((card) => (
+            <CardItem key={card._id} card={card} />
+          ))}
       </div>
     </div>
   );
