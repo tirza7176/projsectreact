@@ -9,78 +9,79 @@ function CreateCard() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(undefined);
   const [success, setSuccess] = useState(false);
-  const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
-    validateOnMount: true,
-    initialValues: {
-      title: "",
-      subtitle: "",
-      description: "",
-      phone: "",
-      email: "",
-      web: "",
-      image: {
-        url: "",
-        alt: "",
+  const { getFieldProps, handleSubmit, touched, errors, isValid, handleReset } =
+    useFormik({
+      validateOnMount: true,
+      initialValues: {
+        title: "",
+        subtitle: "",
+        description: "",
+        phone: "",
+        email: "",
+        web: "",
+        image: {
+          url: "",
+          alt: "",
+        },
+        address: {
+          state: "",
+          country: "",
+          city: "",
+          street: "",
+          houseNumber: "",
+          zip: "",
+        },
       },
-      address: {
-        state: "",
-        country: "",
-        city: "",
-        street: "",
-        houseNumber: "",
-        zip: "",
-      },
-    },
-    validate: (values) => {
-      const cardSchema = Joi.object({
-        title: Joi.string().min(2).max(256).required(),
-        subtitle: Joi.string().min(2).max(256).required(),
-        description: Joi.string().min(2).max(1024).required(),
-        email: Joi.string().min(6).max(255).required().email({ tlds: false }),
-        phone: Joi.string().required(),
-        web: Joi.string().min(14).max(256).allow(""),
-        image: Joi.object({
-          url: Joi.string().allow(""),
-          alt: Joi.string().min(2).max(256).allow(""),
-        }).optional(),
-        address: Joi.object({
-          state: Joi.string().allow(""),
-          country: Joi.string().min(2).max(256).required(),
-          city: Joi.string().min(2).max(256).required(),
-          street: Joi.string().min(2).max(256).required(),
-          houseNumber: Joi.number().required(),
-          zip: Joi.number().required(),
-        }).required(),
-      });
-      const { error } = cardSchema.validate(values, { abortEarly: false });
-      if (!error) {
-        return null;
-      }
-      const errors = {};
-      for (const detail of error.details) {
-        errors[detail.path[0]] = detail.message;
-      }
-      console.log(errors);
-      return errors;
-    },
-
-    onSubmit: async (values) => {
-      console.log("run");
-      try {
-        await cardService.createCard({
-          ...values,
+      validate: (values) => {
+        const cardSchema = Joi.object({
+          title: Joi.string().min(2).max(256).required(),
+          subtitle: Joi.string().min(2).max(256).required(),
+          description: Joi.string().min(2).max(1024).required(),
+          email: Joi.string().min(6).max(255).required().email({ tlds: false }),
+          phone: Joi.string().required(),
+          web: Joi.string().min(14).max(256).allow(""),
+          image: Joi.object({
+            url: Joi.string().allow(""),
+            alt: Joi.string().min(2).max(256).allow(""),
+          }).optional(),
+          address: Joi.object({
+            state: Joi.string().allow(""),
+            country: Joi.string().min(2).max(256).required(),
+            city: Joi.string().min(2).max(256).required(),
+            street: Joi.string().min(2).max(256).required(),
+            houseNumber: Joi.number().required(),
+            zip: Joi.number().required(),
+          }).required(),
         });
-        setSuccess(true);
-        setTimeout(() => {
-          navigate("/mycards");
-        }, 3000);
-      } catch (err) {
-        if (err.response?.status === 400) {
-          setServerError(err.response.data);
+        const { error } = cardSchema.validate(values, { abortEarly: false });
+        if (!error) {
+          return null;
         }
-      }
-    },
-  });
+        const errors = {};
+        for (const detail of error.details) {
+          errors[detail.path[0]] = detail.message;
+        }
+        console.log(errors);
+        return errors;
+      },
+
+      onSubmit: async (values) => {
+        console.log("run");
+        try {
+          await cardService.createCard({
+            ...values,
+          });
+          setSuccess(true);
+          setTimeout(() => {
+            navigate("/mycards");
+          }, 3000);
+        } catch (err) {
+          if (err.response?.status === 400) {
+            setServerError(err.response.data);
+          }
+        }
+      },
+    });
 
   return (
     <div className="mt-5 bg-success-subtle d-flex justify-content-center flex-column align-items-center">
@@ -192,7 +193,7 @@ function CreateCard() {
             />
             <Input
               {...getFieldProps("address.street")}
-              error={touched?.address?.street ? errors?.address?.street : ""}
+              error={touched?.address?.street && errors?.address.street}
               type="text"
               placeholder="street"
               required
@@ -226,6 +227,7 @@ function CreateCard() {
                 <button
                   type="reset"
                   className=" col-4 btn btn-outline-secondary"
+                  onClick={handleReset}
                 >
                   <i className="bi bi-arrow-repeat"></i>
                 </button>

@@ -11,89 +11,90 @@ function Signup(params) {
   const [serverError, setServerError] = useState(undefined);
   const { createUser, user, login } = useAuth();
   const [success, setSuccess] = useState(false);
-  const { getFieldProps, handleSubmit, touched, errors, isValid } = useFormik({
-    validateOnMount: true,
-    initialValues: {
-      name: {
-        first: "",
-        middle: "",
-        last: "",
+  const { getFieldProps, handleSubmit, handleReset, touched, errors, isValid } =
+    useFormik({
+      validateOnMount: true,
+      initialValues: {
+        name: {
+          first: "",
+          middle: "",
+          last: "",
+        },
+        phone: "",
+        email: "",
+        password: "",
+        image: {
+          url: "",
+          alt: "",
+        },
+        address: {
+          state: "",
+          country: "",
+          city: "",
+          street: "",
+          houseNumber: "",
+          zip: "",
+        },
+        isBusiness: false,
       },
-      phone: "",
-      email: "",
-      password: "",
-      image: {
-        url: "",
-        alt: "",
-      },
-      address: {
-        state: "",
-        country: "",
-        city: "",
-        street: "",
-        houseNumber: "",
-        zip: "",
-      },
-      isBusiness: false,
-    },
-    validate: (values) => {
-      const userSchema = Joi.object({
-        name: Joi.object({
-          first: Joi.string().min(2).max(256).required(),
-          middle: Joi.string().min(2).max(256).allow(""),
-          last: Joi.string().min(2).max(256).required(),
-        }).required(),
-        email: Joi.string().min(6).max(255).required().email({ tlds: false }),
-        password: Joi.string()
-          .min(9)
-          .max(30)
-          .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-])/)
-          .required(),
-        phone: Joi.string().required(),
-        image: Joi.object({
-          url: Joi.string().allow(""),
-          alt: Joi.string().min(2).max(256).allow(""),
-        }).optional(),
-        address: Joi.object({
-          state: Joi.string().allow(""),
-          country: Joi.string().min(2).max(256).required(),
-          city: Joi.string().min(2).max(256).required(),
-          street: Joi.string().min(2).max(256).required(),
-          houseNumber: Joi.number().required(),
-          zip: Joi.number().required(),
-        }).required(),
-        isBusiness: Joi.boolean(),
-      });
-      const { error } = userSchema.validate(values, { abortEarly: false });
-      if (!error) {
-        return null;
-      }
-      const errors = {};
-      for (const detail of error.details) {
-        errors[detail.path[0]] = detail.message;
-      }
-      console.log(errors);
-      return errors;
-    },
-
-    onSubmit: async (values) => {
-      console.log("run");
-      try {
-        await createUser({
-          ...values,
+      validate: (values) => {
+        const userSchema = Joi.object({
+          name: Joi.object({
+            first: Joi.string().min(2).max(256).required(),
+            middle: Joi.string().min(2).max(256).allow(""),
+            last: Joi.string().min(2).max(256).required(),
+          }).required(),
+          email: Joi.string().min(6).max(255).required().email({ tlds: false }),
+          password: Joi.string()
+            .min(9)
+            .max(30)
+            .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-])/)
+            .required(),
+          phone: Joi.string().required(),
+          image: Joi.object({
+            url: Joi.string().allow(""),
+            alt: Joi.string().min(2).max(256).allow(""),
+          }).optional(),
+          address: Joi.object({
+            state: Joi.string().allow(""),
+            country: Joi.string().min(2).max(256).required(),
+            city: Joi.string().min(2).max(256).required(),
+            street: Joi.string().min(2).max(256).required(),
+            houseNumber: Joi.number().required(),
+            zip: Joi.number().required(),
+          }).required(),
+          isBusiness: Joi.boolean(),
         });
-        await login({ email: values.email, password: values.password });
-        setSuccess(true);
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
-      } catch (err) {
-        if (err.response?.status === 400) {
-          setServerError(err.response.data);
+        const { error } = userSchema.validate(values, { abortEarly: false });
+        if (!error) {
+          return null;
         }
-      }
-    },
-  });
+        const errors = {};
+        for (const detail of error.details) {
+          errors[detail.path[0]] = detail.message;
+        }
+        console.log(errors);
+        return errors;
+      },
+
+      onSubmit: async (values) => {
+        console.log("run");
+        try {
+          await createUser({
+            ...values,
+          });
+          await login({ email: values.email, password: values.password });
+          setSuccess(true);
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
+        } catch (err) {
+          if (err.response?.status === 400) {
+            setServerError(err.response.data);
+          }
+        }
+      },
+    });
 
   return (
     <div className="bg-success-subtle d-flex justify-content-center flex-column align-items-center">
@@ -244,12 +245,19 @@ function Signup(params) {
               </div>
 
               <div className="row mt-3 mb-3">
-                <button type="button" className=" col-4 btn btn-outline-danger">
+                <button
+                  type="button"
+                  className=" col-4 btn btn-outline-danger"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
                   cancel
                 </button>
 
                 <button
-                  type="button"
+                  type="reset"
+                  onClick={handleReset}
                   className=" col-4 btn btn-outline-secondary"
                 >
                   <i className="bi bi-arrow-repeat"></i>

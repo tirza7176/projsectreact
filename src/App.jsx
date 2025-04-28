@@ -15,6 +15,7 @@ import CreateCard from "./pages/createCard";
 import FavCards from "./pages/favcard";
 import EditCard from "./pages/editCard";
 import DeleteCard from "./pages/deleteCard";
+import CardDetails from "./pages/cardDetails";
 function App() {
   return (
     <div className="min-vh-100 d-flex flex-column">
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signout" element={<SignOut />} />
@@ -32,6 +34,7 @@ function App() {
           <Route path="/addnewcard" element={<CreateCard />} />
           <Route path="/mycards/edit/:id" element={<EditCard />} />
           <Route path="/mycards/delete/:id" element={<DeleteCard />} />
+          <Route path="/card/:id" element={<CardDetails />} />
           <Route path="/favcard" element={<FavCards />} />
         </Routes>
       </main>

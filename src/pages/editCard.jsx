@@ -3,7 +3,7 @@ import Input from "../components/input";
 import { useFormik } from "formik";
 import Joi from "joi";
 import cardService from "../services/cardServics";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import useCard from "../hooks/useCard";
 function EditCard() {
@@ -83,21 +83,21 @@ function EditCard() {
       return;
     }
     form.setValues({
-      title: card.data.title,
-      subtitle: card.data.subtitle,
-      description: card.data.description,
-      email: card.data.email,
-      phone: card.data.phone,
-      web: card.data.web,
-      image: { url: card.data.image?.url, alt: card.data.image?.alt },
+      title: card.title,
+      subtitle: card.subtitle,
+      description: card.description,
+      email: card.email,
+      phone: card.phone,
+      web: card.web,
+      image: { url: card.image?.url, alt: card.image?.alt },
       address: {
-        state: card.data.address?.state,
-        country: card.data.address?.country,
-        city: card.data.address?.city,
-        street: card.data.address?.street,
-        houseNumber: card.data.address?.houseNumber,
+        state: card.address?.state,
+        country: card.address?.country,
+        city: card.address?.city,
+        street: card.address?.street,
+        houseNumber: card.address?.houseNumber,
 
-        zip: card.data.address?.zip,
+        zip: card.address?.zip,
       },
     });
   }, [card]);
@@ -170,20 +170,20 @@ function EditCard() {
           </div>
           <div className="row g-3 mt-5">
             <Input
-              error={form.touched.image.url && form.errors.image.url}
+              error={form.touched.image?.url && form.errors.image?.url}
               {...form.getFieldProps("image.url")}
               type="text"
               placeholder="url image"
             />
             <Input
               {...form.getFieldProps("image.alt")}
-              error={form.touched.image.alt && form.errors.image.alt}
+              error={form.touched.image?.alt && form.errors.image?.alt}
               type="text"
               placeholder="alt image"
             />
             <Input
               {...form.getFieldProps("address.state")}
-              error={form.touched.address.state && form.errors.address.state}
+              error={form.touched.address?.state && form.errors.address?.state}
               type="text"
               placeholder="state"
             />
@@ -192,7 +192,7 @@ function EditCard() {
             <Input
               {...form.getFieldProps("address.country")}
               error={
-                form.touched.address.country && form.errors.address.country
+                form.touched.address?.country && form.errors.address?.country
               }
               type="text"
               placeholder="country"
@@ -200,14 +200,16 @@ function EditCard() {
             />
             <Input
               {...form.getFieldProps("address.city")}
-              error={form.touched.address.city && form.errors.address.city}
+              error={form.touched.address?.city && form.errors.address?.city}
               type="text"
               placeholder="city"
               required
             />
             <Input
               {...form.getFieldProps("address.street")}
-              error={form.touched.address.street && form.errors.address.street}
+              error={
+                form.touched.address?.street && form.errors.address?.street
+              }
               type="text"
               placeholder="street"
               required
@@ -217,8 +219,8 @@ function EditCard() {
             <Input
               {...form.getFieldProps("address.houseNumber")}
               error={
-                form.touched.address.houseNumber &&
-                form.errors.address.houseNumber
+                form.touched.address?.houseNumber &&
+                form.errors.address?.houseNumber
               }
               type="number"
               placeholder="House Number"
@@ -226,7 +228,7 @@ function EditCard() {
             />
             <Input
               {...form.getFieldProps("address.zip")}
-              error={form.touched.address.zip && form.errors.address.zip}
+              error={form.touched.address?.zip && form.errors.address?.zip}
               type="number"
               placeholder="zip"
               required

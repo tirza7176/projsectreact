@@ -6,13 +6,17 @@ function useCard(id) {
 
   useEffect(() => {
     async function getCard() {
-      const card = await cardService.getCard(id);
+      try {
+        const card = await cardService.getCardByid(id);
 
-      setCard(card);
+        setCard(card);
+        console.log(card);
+      } catch (error) {
+        console.error("Failed to fetch card", error);
+      }
     }
-
     getCard();
-  }, []);
+  }, [id]);
 
   return card;
 }
