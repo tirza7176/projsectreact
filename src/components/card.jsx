@@ -37,38 +37,41 @@ function CardItem({ card }) {
   }
 
   return (
-    <div className="card text-center shadow " style={{ width: "18rem" }}>
+    <div
+      className="card text-center shadow d-flex flex-column h-100"
+      style={{ width: "18rem" }}
+    >
       <Link to={`/card/${card._id}`}>
         <img
           src={image?.url || "../public/defult.png"}
           className="card-img-top"
           alt={image?.alt || "Card image"}
         />
-        <div className="card-body d-flex flex-column justify-content-between">
-          <div>
-            <h5 className="card-title">{title}</h5>
-            <p className="card-text">{description}</p>
-          </div>
-          <div className="mt-3">
-            <p>
-              <strong>phone: </strong>
-              {phone}
-            </p>
-            <p>
-              <strong> address:</strong>
-              {`${address.city},
-            ${address.street},
-            ${address.houseNumber}`}
-            </p>
-            <p>
-              <strong>biz number:</strong> {bizNumber}
-            </p>
-          </div>
-        </div>
       </Link>
+      <div className="card-body d-flex flex-column justify-content-between flex-grow-1">
+        <div>
+          <h5 className="card-title">{title}</h5>
+          <p className="card-text">{subtitle}</p>
+        </div>
+        <div className="mt-3">
+          <p>
+            <strong>phone: </strong>
+            {phone}
+          </p>
+          <p>
+            <strong> address: </strong>
+            {`${address.city},
+            ${address.street}
+            ${address.houseNumber}`}
+          </p>
+          <p>
+            <strong>biz number:</strong> {bizNumber}
+          </p>
+        </div>
+      </div>
       <div className="card-body d-flex justify-content-around">
         {user && (
-          <button onClick={handleLike}>
+          <button className="btn btn-link p-0 m-0" onClick={handleLike}>
             <i
               className={`bi ${
                 isLike ? "bi-heart-fill text-danger" : "bi-heart"

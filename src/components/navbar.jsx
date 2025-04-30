@@ -3,10 +3,26 @@ import Logo from "../components/logo";
 import { useAuth } from "../contexts/AuthContext";
 
 import { useSearch } from "../contexts/searchprovider";
+import { useEffect, useState } from "react";
 
 function Navbar() {
   const { user } = useAuth();
   const { inputSearch, setInputsearch } = useSearch();
+
+  const [theme, setTheme] = useState(false);
+  useEffect(() => {
+    const mode = theme ? "dark" : "light";
+    document.documentElement.setAttribute("data-bs-theme", mode);
+  }, [theme]);
+
+  function handleToggle() {
+    if (!theme) {
+      setTheme(true);
+    } else {
+      setTheme(false);
+    }
+  }
+
   return (
     <nav
       className="navbar navbar-expand-md navbar bg-primary bg-opacity-75 shadow-sm "
@@ -77,8 +93,13 @@ function Navbar() {
               onChange={(e) => setInputsearch(e.target.value)}
             ></input>
           </div>
-          <i className="bi bi-moon-fill"></i>
-          <i className="bi bi-brightness-high"></i>
+          <button className="ms-2 btn btn-link-dark" onClick={handleToggle}>
+            {theme ? (
+              <i className="bi bi-brightness-high"></i>
+            ) : (
+              <i className="bi bi-moon-fill"></i>
+            )}
+          </button>
           <ul className="navbar-nav ms-auto mb-2 mb-md-0">
             {user ? (
               <li className="nav-item">

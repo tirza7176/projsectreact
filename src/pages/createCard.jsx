@@ -193,7 +193,7 @@ function CreateCard() {
             />
             <Input
               {...getFieldProps("address.street")}
-              error={touched?.address?.street && errors?.address.street}
+              error={touched?.address?.street && errors?.address?.street}
               type="text"
               placeholder="street"
               required

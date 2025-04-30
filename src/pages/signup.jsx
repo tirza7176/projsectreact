@@ -72,6 +72,7 @@ function Signup(params) {
         const errors = {};
         for (const detail of error.details) {
           errors[detail.path[0]] = detail.message;
+          console.log("aaaaaaa", detail);
         }
         console.log(errors);
         return errors;
@@ -120,13 +121,12 @@ function Signup(params) {
           <div className="row g-3">
             <Input
               {...getFieldProps("name.first")}
-              error={touched?.name?.first ? errors?.name?.first : ""}
+              error={errors.name?.first}
               type="text"
               label="First name"
               placeholder="first name"
               required
             />
-
             <Input
               {...getFieldProps("name.last")}
               error={touched?.name?.last ? errors?.name?.last : ""}
@@ -160,7 +160,6 @@ function Signup(params) {
               placeholder="mail@example.com"
               required
             />
-
             <Input
               {...getFieldProps("password")}
               error={touched.password ? errors.password : ""}
@@ -204,7 +203,6 @@ function Signup(params) {
               placeholder="city"
               required
             />
-
             <Input
               {...getFieldProps("address.street")}
               error={touched?.address?.street ? errors?.address?.street : ""}
@@ -243,7 +241,6 @@ function Signup(params) {
                   ></Input>
                 </div>
               </div>
-
               <div className="row mt-3 mb-3">
                 <button
                   type="button"
@@ -254,7 +251,6 @@ function Signup(params) {
                 >
                   cancel
                 </button>
-
                 <button
                   type="reset"
                   onClick={handleReset}
