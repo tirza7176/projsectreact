@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
-function Signup(params) {
+function Signup() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState(undefined);
   const { createUser, user, login } = useAuth();
@@ -71,24 +71,28 @@ function Signup(params) {
         }
         const errors = {};
         for (const detail of error.details) {
-          errors[detail.path[0]] = detail.message;
-          console.log("aaaaaaa", detail);
+          let current = errors;
+          for (let i = 0; i < detail.path.length; i++) {
+            const key = detail.path[i];
+            if (!current[key]) current[key] = {};
+            if (i + 1 === detail.path.length) current[key] = detail.message;
+            else current = current[key];
+          }
         }
-        console.log(errors);
         return errors;
       },
 
       onSubmit: async (values) => {
-        console.log("run");
         try {
           await createUser({
             ...values,
           });
+          console.log(response.name.first);
           await login({ email: values.email, password: values.password });
           setSuccess(true);
           setTimeout(() => {
             navigate("/");
-          }, 3000);
+          }, 2500);
         } catch (err) {
           if (err.response?.status === 400) {
             setServerError(err.response.data);
@@ -99,10 +103,14 @@ function Signup(params) {
 
   return (
     <div className="bg-success-subtle d-flex justify-content-center flex-column align-items-center">
-      <Pageheader
-        title="register"
-        description="Fill in your details to register on the site"
-      />
+      <div className="container mt-2">
+        <div className="text-center mb-4">
+          <Pageheader
+            title="register"
+            description="Fill in your details to register on the site"
+          />
+        </div>
+      </div>
       {success && (
         <div className="alert alert-info" role="alert">
           User successfully created
@@ -258,7 +266,6 @@ function Signup(params) {
                 >
                   <i className="bi bi-arrow-repeat"></i>
                 </button>
-
                 <button
                   disabled={!isValid}
                   type="submit"

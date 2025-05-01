@@ -48,9 +48,13 @@ function Signin() {
     });
 
   return (
-    <div className="container bs-success-subtle d-flex justify-content-center flex-column align-items-center mt-5">
-      {user && <Navigate to="/" />}
-      <Pageheader title="Sign-in" description="Sign in with your account" />
+    <div className="container bs-success-subtle d-flex justify-content-center flex-column align-items-center ">
+      <div className="container mt-2">
+        <div className="text-center mb-4">
+          {user && <Navigate to="/" />}
+          <Pageheader title="Sign-in" description="Sign in with your account" />
+        </div>
+      </div>
       <form
         onSubmit={handleSubmit}
         noValidate

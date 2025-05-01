@@ -6,7 +6,7 @@ import useCard from "../hooks/useCard";
 function CardDetails() {
   const { id } = useParams();
   const card = useCard(id);
-  console.log(card);
+
   if (!card) {
     return <div>Loading...</div>;
   }

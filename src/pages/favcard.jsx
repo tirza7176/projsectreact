@@ -51,7 +51,15 @@ function FavCards() {
                 card.bizNumber.toString().includes(searchTerm)
               );
             })
-            .map((card) => <CardItem key={card._id} card={card} />)
+
+            .map((card) => (
+              <div
+                key={card._id}
+                className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+              >
+                <CardItem card={card} />
+              </div>
+            ))
         )}
       </div>
     </div>

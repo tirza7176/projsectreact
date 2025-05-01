@@ -57,11 +57,17 @@ function CreateCard() {
         if (!error) {
           return null;
         }
+
         const errors = {};
         for (const detail of error.details) {
-          errors[detail.path[0]] = detail.message;
+          let current = errors;
+          for (let i = 0; i < detail.path.length; i++) {
+            const key = detail.path[i];
+            if (!current[key]) current[key] = {};
+            if (i + 1 === detail.path.length) current[key] = detail.message;
+            else current = current[key];
+          }
         }
-        console.log(errors);
         return errors;
       },
 
@@ -74,7 +80,7 @@ function CreateCard() {
           setSuccess(true);
           setTimeout(() => {
             navigate("/mycards");
-          }, 3000);
+          }, 2500);
         } catch (err) {
           if (err.response?.status === 400) {
             setServerError(err.response.data);
@@ -85,13 +91,15 @@ function CreateCard() {
 
   return (
     <div className="mt-5 bg-success-subtle d-flex justify-content-center flex-column align-items-center">
-      <Pageheader title="Create new card" />
-      {success && (
-        <div className="alert alert-info" role="alert">
-          Card created successfully!
-        </div>
-      )}
-      <div className="mt-5">
+      <div className="text-center">
+        <Pageheader title="Create new card" />
+        {success && (
+          <div className="alert alert-info" role="alert">
+            Card created successfully!
+          </div>
+        )}
+      </div>
+      <div className="mt-3">
         <form
           onSubmit={handleSubmit}
           noValidate

@@ -38,8 +38,8 @@ function CardItem({ card }) {
 
   return (
     <div
-      className="card text-center shadow d-flex flex-column h-100"
-      style={{ width: "18rem" }}
+      className="card text-center shadow d-flex flex-column h-100 w-100"
+      style={{ maxWidth: "18rem" }}
     >
       <Link to={`/card/${card._id}`}>
         <img
@@ -48,7 +48,7 @@ function CardItem({ card }) {
           alt={image?.alt || "Card image"}
         />
       </Link>
-      <div className="card-body d-flex flex-column justify-content-between flex-grow-1">
+      <div className="card-body flex-column justify-content-between flex-grow-1">
         <div>
           <h5 className="card-title">{title}</h5>
           <p className="card-text">{subtitle}</p>
@@ -69,16 +69,18 @@ function CardItem({ card }) {
           </p>
         </div>
       </div>
-      <div className="card-body d-flex justify-content-around">
-        {user && (
-          <button className="btn btn-link p-0 m-0" onClick={handleLike}>
-            <i
-              className={`bi ${
-                isLike ? "bi-heart-fill text-danger" : "bi-heart"
-              }`}
-            ></i>
-          </button>
-        )}
+      <div className="card-body d-flex justify-content-around align-items-center gap-3">
+        <span>
+          {user && (
+            <button className="btn btn-link p-0 m-0" onClick={handleLike}>
+              <i
+                className={`bi ${
+                  isLike ? "bi-heart-fill text-danger" : "bi-heart"
+                }`}
+              ></i>
+            </button>
+          )}
+        </span>
         {user?._id === card.user_id && (
           <>
             <Link to={`/mycards/delete/${_id}`}>

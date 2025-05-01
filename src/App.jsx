@@ -18,7 +18,7 @@ import DeleteCard from "./pages/deleteCard";
 import CardDetails from "./pages/cardDetails";
 function App() {
   return (
-    <div className="min-vh-100 d-flex flex-column">
+    <div className="min-vh-100 d-flex flex-column overflow-x-hidden">
       <header>
         <NavBar />
       </header>

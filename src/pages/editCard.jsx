@@ -102,8 +102,10 @@ function EditCard() {
     });
   }, [card]);
   return (
-    <div className=" mt-5 bg-success-subtle d-flex justify-content-center flex-column align-items-center">
-      <Pageheader title="Edit my card" />
+    <div className=" mt-3 bg-success-subtle d-flex justify-content-center flex-column align-items-center">
+      <div className="text-center">
+        <Pageheader title="Edit my card" />
+      </div>
       <div className="mt-5">
         <form
           onSubmit={form.handleSubmit}
@@ -239,7 +241,7 @@ function EditCard() {
                 <button
                   type="button"
                   className=" col-4 btn btn-outline-danger"
-                  onClick={() => navigate("/my-cards")}
+                  onClick={() => navigate("/mycards")}
                 >
                   cancel
                 </button>

@@ -4,7 +4,10 @@ const TOKEN_KEY = "token";
 refreshToken()
 function createUser(user) {
     return httpService.post("/users", user)
+
 }
+
+
 async function login(credentials) {
     try {
         const response = await httpService.post("/users/login", credentials);
@@ -36,6 +39,8 @@ async function getUserbyid(userid) {
     return response.data;
 
 }
+
+
 function getUser() {
     try {
         const token = getJwt();
@@ -47,7 +52,6 @@ function getUser() {
 }
 
 getUser()
-
 
 const userService = {
     createUser,
