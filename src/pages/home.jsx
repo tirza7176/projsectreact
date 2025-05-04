@@ -19,7 +19,6 @@ function Home() {
         try {
           const data = await userService.getUserbyid(user._id);
           setFullName(data.name.first);
-          console.log(data.name.first);
         } catch (err) {
           console.error("Failed to fetch user name", err);
         }

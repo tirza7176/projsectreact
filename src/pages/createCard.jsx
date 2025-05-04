@@ -72,7 +72,6 @@ function CreateCard() {
       },
 
       onSubmit: async (values) => {
-        console.log("run");
         try {
           await cardService.createCard({
             ...values,

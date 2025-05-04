@@ -14,7 +14,6 @@ function FavCards() {
 
     try {
       const allCards = await cardService.getAllCards();
-      console.log(allCards);
 
       const favoriteCards = allCards.data.filter((card) =>
         card.likes.includes(user._id)

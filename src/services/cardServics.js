@@ -11,7 +11,7 @@ async function getMyCards() {
         return response.data;
     }
     catch (error) {
-        console.log(error);
+
         throw error
     }
 }
@@ -22,7 +22,6 @@ async function getCardByid(id) {
         return response.data;
 
     } catch (error) {
-        console.log(error);
 
     }
 }
@@ -45,7 +44,7 @@ async function likeCard(cardId) {
         return response.data
     }
     catch (error) {
-        console.log(error);
+
         console.error("Server said:", error.response?.data)
     }
 }

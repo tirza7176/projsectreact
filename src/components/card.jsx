@@ -26,8 +26,7 @@ function CardItem({ card }) {
   async function handleLike() {
     try {
       const response = await cardService.likeCard(card._id);
-      console.log(user._id);
-      console.log(response.likes);
+
       const updatedLikes = response.likes || [];
       const liked = updatedLikes.includes(user._id);
       setIslike(liked);

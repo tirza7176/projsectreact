@@ -10,7 +10,6 @@ function useCard(id) {
         const card = await cardService.getCardByid(id);
 
         setCard(card);
-        console.log(card);
       } catch (error) {
         console.error("Failed to fetch card", error);
       }
