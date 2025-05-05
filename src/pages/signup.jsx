@@ -8,7 +8,8 @@ import { Navigate, useNavigate } from "react-router";
 
 function Signup() {
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState(undefined);
+
+  const [isRegistered, setIsRegistered] = useState(false);
   const { createUser, user, login } = useAuth();
   const [success, setSuccess] = useState(false);
   const { getFieldProps, handleSubmit, handleReset, touched, errors, isValid } =
@@ -95,7 +96,7 @@ function Signup() {
           }, 2500);
         } catch (err) {
           if (err.response?.status === 400) {
-            setServerError(err.response.data);
+            setIsRegistered(true);
           }
         }
       },
@@ -123,9 +124,6 @@ function Signup() {
           autoComplete="off"
           className="d-flex flex-column"
         >
-          {serverError && (
-            <div className="alert-alert-danger">{serverError}</div>
-          )}
           <div className="row g-3">
             <Input
               {...getFieldProps("name.first")}
@@ -162,7 +160,13 @@ function Signup() {
             />
             <Input
               {...getFieldProps("email")}
-              error={touched.email ? errors.email : ""}
+              error={
+                isRegistered
+                  ? "email already exist"
+                  : touched.email
+                  ? errors.email
+                  : ""
+              }
               type="email"
               label="Email"
               placeholder="mail@example.com"
@@ -261,7 +265,10 @@ function Signup() {
                 </button>
                 <button
                   type="reset"
-                  onClick={handleReset}
+                  onClick={() => {
+                    setIsRegistered(false);
+                    handleReset();
+                  }}
                   className=" col-4 btn btn-outline-secondary"
                 >
                   <i className="bi bi-arrow-repeat"></i>

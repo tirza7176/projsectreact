@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 function Signin() {
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState("");
+  const [isRegistered, setIsRegistered] = useState(false);
   const { login, user } = useAuth();
   const { getFieldProps, handleSubmit, handleReset, touched, errors, isValid } =
     useFormik({
@@ -41,7 +41,7 @@ function Signin() {
           navigate("/");
         } catch (err) {
           if (err.response?.status === 400) {
-            setServerError(err.response.data);
+            setIsRegistered(true);
           }
         }
       },
@@ -61,17 +61,18 @@ function Signin() {
         autoComplete="off"
         className="d-flex flex-column mt-5 border border-primary-subtle border rounded-3 w-75"
       >
-        {serverError && (
-          <div className="w-50 alert alert-danger">
-            {"Please enter a valid email or password"}
-          </div>
-        )}
         <div className="row w-100 mx-auto mb-3 px-3 justify-content-center">
           <Input
             {...getFieldProps("email")}
             type="email"
             label="Email"
-            error={touched.email ? errors.email : ""}
+            error={
+              isRegistered
+                ? "Please enter a valid email"
+                : touched.email
+                ? errors.email
+                : ""
+            }
             placeholder="mail@example.com"
             required
           />
@@ -80,7 +81,13 @@ function Signin() {
             {...getFieldProps("password")}
             type="password"
             label="password"
-            error={touched.password ? errors.password : ""}
+            error={
+              isRegistered
+                ? "Please enter a valid password"
+                : touched.password
+                ? errors.password
+                : ""
+            }
             required
           />
         </div>
@@ -97,7 +104,10 @@ function Signin() {
 
           <button
             type="reset"
-            onClick={handleReset}
+            onClick={() => {
+              setIsRegistered(false);
+              handleReset();
+            }}
             className=" col-4  btn btn-outline-secondary"
           >
             <i className="bi bi-arrow-repeat"></i>

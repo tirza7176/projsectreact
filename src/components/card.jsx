@@ -37,61 +37,56 @@ function CardItem({ card }) {
 
   return (
     <div
-      className="card text-center shadow d-flex flex-column h-100 w-100"
+      className="card shadow-sm rounded-4 text-center d-flex flex-column h-100"
       style={{ maxWidth: "18rem" }}
     >
-      <Link to={`/card/${card._id}`}>
+      <Link to={`/card/${_id}`}>
         <img
           src={image?.url || "../public/defult.png"}
-          className="card-img-top"
+          className="card-img-top rounded-top-4"
           alt={image?.alt || "Card image"}
         />
       </Link>
-      <div className="card-body flex-column justify-content-between flex-grow-1">
+      <div className="card-body d-flex flex-column justify-content-between flex-grow-1">
         <div>
-          <h5 className="card-title">{title}</h5>
-          <p className="card-text">{subtitle}</p>
+          <h5 className="card-title fw-bold">{title}</h5>
+          <p className="card-text text-muted">{subtitle}</p>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 text-start">
           <p>
-            <strong>phone: </strong>
-            {phone}
+            <strong>phone:</strong> {phone}
           </p>
           <p>
-            <strong> address: </strong>
-            {`${address.city},
-            ${address.street}
-            ${address.houseNumber}`}
+            <strong>address:</strong>{" "}
+            {`${address.city}, ${address.street} ${address.houseNumber}`}
           </p>
           <p>
             <strong>biz number:</strong> {bizNumber}
           </p>
         </div>
       </div>
-      <div className="card-body d-flex justify-content-around align-items-center gap-3">
-        <span>
-          {user && (
-            <button className="btn btn-link p-0 m-0" onClick={handleLike}>
-              <i
-                className={`bi ${
-                  isLike ? "bi-heart-fill text-danger" : "bi-heart"
-                }`}
-              ></i>
-            </button>
-          )}
-        </span>
+      <div className="card-body d-flex justify-content-between align-items-center px-3 pb-3">
+        {user && (
+          <button className="btn btn-link p-0 m-0" onClick={handleLike}>
+            <i
+              className={`bi ${
+                isLike ? "bi-heart-fill text-danger" : "bi-heart"
+              } fs-5`}
+            ></i>
+          </button>
+        )}
         {user?._id === card.user_id && (
           <>
-            <Link to={`/mycards/delete/${_id}`}>
-              <i className="bi bi-trash3-fill"></i>
+            <Link to={`/mycards/delete/${_id}`} className="text-dark">
+              <i className="bi bi-trash3-fill fs-5"></i>
             </Link>
-            <Link to={`/mycards/edit/${_id}`} className="card-link">
-              <i className="bi bi-pencil-fill"></i>
+            <Link to={`/mycards/edit/${_id}`} className="text-dark">
+              <i className="bi bi-pencil-fill fs-5"></i>
             </Link>
           </>
         )}
-        <Link to={`tel:${card.phone}`} className="card-link">
-          <i className="bi bi-telephone-fill"></i>
+        <Link to={`tel:${phone}`} className="text-dark">
+          <i className="bi bi-telephone-fill fs-5"></i>
         </Link>
       </div>
     </div>
